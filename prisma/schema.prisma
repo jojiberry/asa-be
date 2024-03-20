@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://josie:@localhost:5432/mydb"
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  password   String
+  timelogged DateTime?
+  Logger     Logger[]
+  rndm       String
+}
+
+model Warehouse {
+  id       Int    @id @default(autoincrement())
+  location String
+  height   Int
+  width    Int
+  length   Int
+  Item     Item[]
+}
+
+model Item {
+  id          Int       @id @default(autoincrement())
+  skucode     Int
+  item_name   String
+  height      Int
+  width       Int
+  length      Int
+  threed_obj  String
+  expiration_date DateTime?
+  // created     DateTime
+  // updated     DateTime
+  warehouse   Warehouse[] //@relation(fields: warehouseId, references: [id])
+  warehouseId Int       
+  Logger      Logger[]
+}
+
+model Logger {
+  id      Int      @id @default(autoincrement())
+  userId  User     @relation(fields: [id_user], references: [id])
+  id_user Int      
+  itemId Item     @relation(fields: [id_item], references: [id])
+  id_item  Int      
+  time    DateTime
+}
