@@ -1,5 +1,6 @@
 import Router from "koa-router";
 import { WarehouseController, ItemController, UserController} from "../controller/test";
+import { ItemUpdateAddress } from "../model/items";
 
 const TEST_PATH = "/test";
 
@@ -73,6 +74,14 @@ function updateItem() {
   return router;
 }
 
+function updateItemAddress() {
+  let router = new Router({ prefix: "/item" });
+  let controller = new ItemController();
+
+  router.put("/updateaddress", controller.updateItemAddress.bind(controller));
+  return router;
+}
+
 function deleteItem() {
   let router = new Router({ prefix: "/item" });
   let controller = new ItemController();
@@ -115,5 +124,5 @@ function deleteUser() {
   return router;
 }
 
-export { testItem, createWarehouse, testWarehouse, deleteWarehouse, updateWarehouse, createItem, deleteItem, updateItem, testUser, createUser, deleteUser, updateUser };
+export { testItem, createWarehouse, testWarehouse, deleteWarehouse, updateWarehouse, createItem, deleteItem, updateItem, updateItemAddress, testUser, createUser, deleteUser, updateUser };
 

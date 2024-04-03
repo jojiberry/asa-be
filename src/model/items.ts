@@ -27,4 +27,10 @@ class ItemUpdate{
     user_id! : number
 }
 
-export {ItemModel, ItemDelete, ItemUpdate}
+class ItemUpdateAddress{
+    id!: number;
+    user_id! : number
+    threed_obj!: string;
+}
+
+export {ItemModel, ItemDelete, ItemUpdate, ItemUpdateAddress}

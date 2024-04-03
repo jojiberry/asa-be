@@ -3,7 +3,7 @@ import { Context } from "koa";
 import { StatusCodes, getReasonPhrase } from "http-status-codes";
 import { errorResponse, successResponse } from "../utils/responses";
 import { WarehouseDelete, WarehouseModel, WarehouseUpdate } from "../model/warehouses";
-import { ItemModel, ItemDelete, ItemUpdate } from "../model/items";
+import { ItemModel, ItemDelete, ItemUpdate , ItemUpdateAddress } from "../model/items";
 import { UserModel, UserDelete, UserUpdate } from "../model/users";
 import { RequestInvalidError } from "../error/request-invalid";
 
@@ -198,15 +198,52 @@ class ItemController {
             id: payload.id,
           },
           data: {
-            id: payload.id,
             skucode: payload.skucode,
-            item_name: payload.item_name,
-            height: payload.height,
+            item_name:payload.item_name,
+            height:payload.height,
             width: payload.width,
-            length: payload.length,
-            threed_obj: payload.threed_obj,
-            // updated: payload.updated,
+            length:payload.length,
+            threed_obj:payload.threed_obj,
             warehouseId: payload.warehouseId,
+          },})
+  
+        let date = new Date()
+        await prisma.logger.create({
+          data:({
+            id_user: payload.user_id,
+            id_item: data.id,
+            time : date
+          })
+        })
+  
+        return successResponse(context, {data: data}, StatusCodes.OK);
+      }
+      catch(error){
+        if (error instanceof RequestInvalidError){
+          return errorResponse(
+            context,
+            { error: error.message },
+            StatusCodes.BAD_REQUEST
+          );
+        }
+        return errorResponse(
+          context,
+          {
+            error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
+          }
+        )
+      }
+    }   
+  public async updateItemAddress(context : Context) {
+      try{
+        let payload = context.request.body as ItemUpdateAddress;
+        console.log(payload)
+        let data = await prisma.item.update({
+          where: {
+            id: payload.id,
+          },
+          data: {
+            threed_obj: payload.threed_obj,
           },})
   
         let date = new Date()

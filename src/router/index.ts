@@ -1,6 +1,6 @@
 import Koa, { HttpError } from "koa";
 import bodyParser from "koa-bodyparser";
-import { createWarehouse, testItem, testWarehouse, deleteWarehouse, updateWarehouse, createItem, deleteItem, updateItem, testUser, createUser, deleteUser, updateUser } from "./test";
+import { createWarehouse, testItem, testWarehouse, deleteWarehouse, updateWarehouse, createItem, deleteItem, updateItem, updateItemAddress, testUser, createUser, deleteUser, updateUser } from "./test";
 import cors from "koa-cors";
 
 
@@ -21,8 +21,6 @@ function routesApi() {
       }
     }
   });
-
-
 
   //warehouse stuff
   let warehouseAPI = testWarehouse();
@@ -57,6 +55,10 @@ function routesApi() {
   let updateitemAPI = updateItem();
   app.use(updateitemAPI.routes());
   app.use(updateitemAPI.allowedMethods());
+
+  let updateitemaddressAPI = updateItemAddress();
+  app.use(updateitemaddressAPI.routes());
+  app.use(updateitemaddressAPI.allowedMethods());
 
   //user stuff
   let userAPI = testUser();
